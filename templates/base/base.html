@@ -1,0 +1,376 @@
+{% load staticfiles %}
+{% load my_templatetag %}
+<!DOCTYPE html>
+<html lang="es-mx">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link href="{% static 'images/sicolab.png' %}" rel='shortcut icon' type='image/png'>
+  <title>{% block title %} SICOLAB | Sistema y Control de Labs {% endblock %} </title>
+  <!-- Bootstrap core CSS-->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <!-- Custom fonts for this template-->
+  <link href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+  <!-- Page level plugin CSS-->
+  <link href="{% static 'vendor/datatables/dataTables.bootstrap4.css' %}" rel="stylesheet">
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/sb-admin.css' %}" rel="stylesheet">
+  <!-- Scrollbar personalizado-->
+  <link href="{% static 'css/scrollbar.css' %}" rel="stylesheet">
+</head>
+{% block body %}
+<body class="fixed-nav sticky-footer bg-primary2" id="page-top">
+  <!-- Navigation-->
+
+  {% block header %}
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary2 fixed-top" id="mainNav">
+    <a class="navbar-brand" href="{% url 'home:index' %}">
+    <img src="{% static 'images/sicolab.png' %}" width=40 height=40> <strong>S I C O L A B</strong></a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav navbar-sidenav scrollbar-macosx" id="exampleAccordion" style="margin-top: 15px">  
+      
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Home">
+          <a class="nav-link" href="{% url 'home:index' %}">
+            <i class="fa fa-fw fa-home"></i>
+            <span class="nav-link-text">Principal</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Sesiones">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion">
+            <i class="fa fa-fw fa-key"></i>
+            <span class="nav-link-text">Historial de Sesiones</span>
+          </a>
+          <ul class="sidenav-second-level collapse bg-gris" id="collapseComponents">
+            <li>              
+              <a href="{% url 'internal:internal_listar' %}"><i class="fa fa-sign-in"></i> Sesiones Internas</a>
+            </li>
+            <li>
+              <a href="{% url 'external:external_listar' %}"><i class="fa fa-sign-in"></i> Sesiones Externas</a>
+            </li>
+          </ul>
+        </li> 
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Administrador">
+          <a class="nav-link" href="{% url 'usuario:listar' %}">
+            <i class="fa fa-fw fa-user"></i>
+            <span class="nav-link-text">Administrador</span>
+          </a>
+        </li>
+        <!-- <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Configuración">
+          <a class="nav-link" href="{% url 'configuration:configuration_listar' %}">
+            <i class="fa fa-fw fa-cog"></i>
+            <span class="nav-link-text">Configuración</span>
+          </a>
+        </li> -->
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Carreras">
+          <a class="nav-link" href="{% url 'career:career_listar' %}">
+            <i class="fa fa-fw fa-graduation-cap"></i>
+            <span class="nav-link-text">Carreras</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Semestres">
+          <a class="nav-link" href="{% url 'career:semester_listar' %}">
+            <i class="fa fa-fw fa-university"></i>
+            <span class="nav-link-text">Semestres</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Laboratorios">
+          <a class="nav-link" href="{% url 'lab:lab_listar' %}">
+            <i class="fa fa-fw fa-delicious"></i>
+            <span class="nav-link-text">Laboratorios</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Computadoras">
+          <a class="nav-link" href="{% url 'lab:computer_listar' %}">
+            <i class="fa fa-fw fa-desktop"></i>
+            <span class="nav-link-text">Computadoras</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Docentes">
+          <a class="nav-link" href="{% url 'teacher:teacher_listar' %}">
+            <i class="fa fa-fw fa-user-circle-o"></i>
+            <span class="nav-link-text">Docentes</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Asignaturas">
+          <a class="nav-link" href="{% url 'subject:subject_listar' %}">
+            <i class="fa fa-fw fa-book"></i>
+            <span class="nav-link-text">Asignaturas</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Estudiantes">
+          <a class="nav-link" href="{% url 'student:student_listar' %}">
+            <i class="fa fa-fw fa-user-circle"></i>
+            <span class="nav-link-text">Estudiantes</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Periodo">
+          <a class="nav-link" href="{% url 'stage:stage_listar' %}">
+            <i class="fa fa-fw fa-calendar"></i>
+            <span class="nav-link-text">Periodo</span>
+          </a>
+        </li> 
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Distributivo">
+          <a class="nav-link" href="{% url 'distributive:distributive_listar' %}">
+            <i class="fa fa-fw fa-tasks"></i>
+            <span class="nav-link-text">Distributivo</span>
+          </a>
+        </li>        
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Horarios">
+          <a class="nav-link" href="{% url 'schedule:schedule_listar' %}">
+            <i class="fa fa-fw fa-clock-o"></i>
+            <span class="nav-link-text">Horarios</span>
+          </a>
+        </li>        
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Estudiante | Asignaturas">
+          <a class="nav-link" href="{% url 'student:subject_student_listar' %}">
+            <i class="fa fa-fw fa-check"></i>
+            <span class="nav-link-text">Estudiante | Asignaturas</span>
+          </a>
+        </li>       
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Usuarios Externos">
+          <a class="nav-link" href="{% url 'guest:guest_listar' %}">
+            <i class="fa fa-fw fa-users"></i>
+            <span class="nav-link-text">Usuarios Externos</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right">
+          <a class="nav-link">            
+            <span class="nav-link-text"></span>
+          </a>
+        </li>
+      </ul>
+       <ul class="navbar-nav sidenav-toggler bg-primary2">
+        <li class="nav-item">
+          <a class="nav-link text-center" id="sidenavToggler1">
+            <i class="fa fa-fw fa-angle-left"></i>
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">        
+          <!-- <button type="button" class="btn btn-info btn-lg"  >Listar</button> -->
+            <!-- Modal -->
+        <li class="nav-item dropdown">
+          
+          <a class="nav-link dropdown-toggle ml-lg-8" class="p-2" id="alertsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+            <i class="fa fa-fw fa-bell"></i>
+            
+                <span id="buttonNotify"></span>
+             
+            <span class="d-lg-none">Alertas
+                  <span id="numnotify" class="badge badge-pill badge-primary">Alertas</span>
+            </span> 
+          </a>
+          <div  class="dropdown-menu dropdown-menu-right"  aria-labelledby="alertsDropdown">
+            <h6 class="dropdown-header">Nuevas Alertas:</h6>
+            
+            <div class="dropdown-divider"></div>
+             <div id="notifycaciones_admin" ></div>
+            <div class="dropdown-divider"></div>
+            
+          </div>
+        
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
+            <i class="fa fa-fw fa-sign-out"></i>Logout</a>
+        </li>
+      </ul>
+    </div>
+
+  </nav>
+  {% endblock %}
+  
+  <div class="content-wrapper">
+    
+    {% block content %}
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->      
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="index.html">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Blank Page</li>
+      </ol>
+
+      <div class="row">
+        <div class="col-12">
+          <h1>Blank</h1>
+          <p>This is an example of a blank page that you can use as a starting point for creating new ones.</p>
+        </div>
+      </div>      
+    </div>
+    {% endblock %}
+    <!-- /.container-fluid-->
+    <!-- /.content-wrapper-->
+
+    {% block footer %}
+    <footer class="sticky-footer">
+      <div class="container">
+        <div class="text-center">          
+          <small>Copyright © SICOLAB | Sistema y Control de Labs</small>
+        </div>
+      </div>
+    </footer>
+    {% endblock %}
+    
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fa fa-angle-up"></i>
+    </a>
+    <!-- Logout Modal-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">¿Desea cerrar sesión?</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">Seleccione "Logout" para confirmar su cierre de sesión.</div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+            <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="exampleModalAlert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Alertas | SICOLAB</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">Aquí leer mensaje de alerta.</div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+            <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Bootstrap core JavaScript-->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/jquery.scrollbar.js' %}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+    <!-- Page level plugin JavaScript-->
+    <script src="{% static 'vendor/datatables/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'vendor/datatables/dataTables.bootstrap4.js' %}"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="{% static 'js/sb-admin.min.js' %}"></script>
+    <!-- Custom scripts for this page-->
+    <script src="{% static 'js/sb-admin-datatables.min.js' %}"></script>
+
+  </div>
+
+  <div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+         {% csrf_token %}
+          <div class="panel panel-default">
+          <div class="panel-body">
+            
+         </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+    <script src="{% static 'js/sb-admin.min.js' %}"></script>
+  </div>
+
+     <script type="text/javascript">
+        var ultimo_id = 0;
+        setInterval(function() {
+           cargarNotify();
+        }, 6000);
+
+          function cargarNotify()
+          { 
+            $("#notifycaciones_admin").empty();
+            $.getJSON("/sicolab/api/notify_current/", data = {'id':ultimo_id}, function( data ) {
+              var cont = 0;
+              var ultimoID = 0;            
+              var tipo = ["","Mensaje","Error"];
+              var tipo1 = ["Leido","No leido"];
+              var tipe=["Error","Usuario","Falla"]
+              
+              //console.log(data)
+              $.each( data, function( key, item ) {
+
+                if (item.status == 1)
+                {
+                  var fecha=item.create_at;
+                  cont++;
+                  var items = '<div class="dropdown-divider"></div> <a class="dropdown-item" target="_blank"  href="/sicolab/notificacionion/ver/'+item.id+'"><span class="text-success"><strong><i class="fa fa-spinner"></i>'+tipe[item.type_notify]+'</strong></span><span class="small float-right text-muted"><i class="fa fa-eye" >'+''+'</i></span><div class="dropdown-message small">'+item.message+''+item.ci+'</div><div class="dropdown-message small"></div></a>';
+                  ultimoID = item.id;
+                  $("#notifycaciones_admin").append(items);
+
+                  var campana = '<span style="display: hidden" class="indicator text-warning d-none d-lg-block"><i class="fa fa-fw fa-circle"></i></span>';
+                  $("#buttonNotify").append(campana);
+                }
+                  
+              });
+             
+              if(ultimoID>ultimo_id){
+                
+                 //$("#numnotify").html((ultimo_id - ultimoID)+" Nuevas Notificaciones");
+                 $("#numnotify").html(cont +" Nuevas Notificaciones");
+
+                 $("#buttonNotify").show();
+                 ultimo_id = ultimoID;
+                 console.log ("Hay una nueva notificacion");
+
+              }
+            }).fail(function(xhr, ajaxOptions, thrownError) {
+                  console.log(xhr.status);
+                  console.log(thrownError);
+            });
+
+          
+          }
+                              
+    </script>
+
+        <script type="text/javascript">
+      jQuery(document).ready(function(){
+          jQuery('.scrollbar-macosx').scrollbar();
+          jQuery("#sidenavToggler1").click(function(){
+            jQuery("body").toggleClass("sidenav-toggled")
+          });
+         
+      });      
+    </script>
+
+
+
+</body>
+{% endblock %}
+</html>
+

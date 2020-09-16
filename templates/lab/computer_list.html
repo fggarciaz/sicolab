@@ -1,0 +1,226 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <form action="{% url 'lab:computer_reporte' %}" method="POST">
+      {% csrf_token %}
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Reporte de Computadoras</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <label>Filtrar por Periodo:</label>
+           <select class="form-control" id="selectLaboratorio" name='selectLaboratorio'>
+                  <option>Todos</option>
+                </select>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Generar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'home:index' %}">Principal</a>
+        </li>
+        <li class="breadcrumb-item active">Lista de Computadores</li>
+      </ol>
+      <!-- Example DataTables Card-->
+      <div class="card mb-3">
+        <div class="card-header">
+          <div class="row d-flex"><div class="col-md-9 mr-auto p-2">
+          <i class="fa fa-table"></i> Tabla | Computadores</div>
+          <a class="btn btn-primary" href="{% url 'computer:computer_crear' %}"><i class="fa fa-plus"></i> Nuevo </a>
+          <a class="btn btn-light ml-1 r" data-toggle="modal" data-target="#exampleModal"> <i class="fa fa-file-pdf-o" ></i> Reporte </a>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th> N° </th>
+                  <th>Computador</th>
+                  <th>MAC</th>
+                  <th>IP</th>
+                  <th>Laboratorio</th>
+                  <th hidden="">IdLaboratorio</th>
+                  <th>Acciones</th>               
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th> N° </th>
+                  <th>Computador</th>
+                  <th>MAC</th>
+                  <th>IP</th>
+                  <th>Laboratorio</th>
+                   <th hidden="">IdLaboratorio</th>
+                  <th>Acciones</th> 
+                </tr>
+              </tfoot>
+              <tbody>
+                {% if object_list %}
+                {% for computer in object_list %}
+                <tr>
+                  <td>{{ computer.id_comp }}</td>
+                  <td>{{ computer.name_comp }}</td>
+                  <td>{{ computer.mac_comp }}</td>
+                  <td>{{ computer.ip_comp }}</td>
+                  <td>{{ computer.lab }}</td>
+                  <td hidden="">{{ computer.lab.id_lab }}</td>
+                  <td>
+                    <a class="btn btn-primary" href="{% url 'computer:computer_editar' computer.id_comp %}"> <i class="fa fa-fw fa-edit"></i> </a>
+                    <a class="btn btn-danger" href="{% url 'computer:computer_eliminar' computer.id_comp %}"> <i class="fa fa-fw fa-trash"></i> </a>
+                  </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <h1> No hay registros de Computadores </h1>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer small text-muted">Computadores registrados</div>
+      </div>
+    </div>
+    <!-- /.container-fluid-->
+
+
+
+     <script type="text/javascript">
+
+    
+    window.onload = function() { 
+      
+     
+      //var tabla = document.getElementById("tabla");
+
+
+       /*var li = tabla.getElementsByTagName("td");
+       for (var i = 0; i < li.length; i++){
+        if(i/i = 0){
+          var contenido = 
+        }
+        var res = li[i].length;
+        console.log(res);
+      }*/
+
+       /*for (var i = 0; i < li.length; i++){
+          var num = li[i].length;
+          console.log(num);
+
+        for (var x = 0; x < num; x++){
+          console.log("numero "+i + "de: " + x);
+        }
+        
+       
+      }
+      */
+      
+    }
+
+  
+
+    </script>
+
+
+
+  <script>
+
+
+function arrayify(collection) {
+  return Array.prototype.slice.call(collection);
+}
+
+function factory(headings) {
+  return function(row) {
+    return arrayify(row.cells).reduce(function(prev, curr, i) {
+      prev[headings[i]] = curr.innerText;
+      return prev;
+    }, {});
+  }
+}
+
+
+function parseTable(table) {
+  var headings = arrayify(table.tHead.rows[0].cells).map(function(heading) {
+    return heading.innerText;
+  });
+  return arrayify(table.tBodies[0].rows).map(factory(headings));
+}
+
+    var arrayLaboratorio = [];
+   
+    var duplicadoLaboratorio = false;
+ 
+
+    var table = document.querySelector("table");
+    var data  = parseTable(table);
+    console.log(data);
+
+    for (var i=0; i<data.length; i++){
+
+      var laboratorio = data[i]['Laboratorio'];
+      var id_laboratorio = data[i]['IdLaboratorio'];
+
+
+      //For para verificar periodos
+      for (var a = 0; a < arrayLaboratorio.length; a++){
+          if (arrayLaboratorio[a] == laboratorio){
+            duplicadoLaboratorio = true;
+            break;
+          }
+        }
+    
+
+        //Agregar periodo al select
+        if (duplicadoLaboratorio == false){
+          var elemento = document.createElement("option");
+          elemento.appendChild(document.createTextNode(laboratorio));
+          elemento.setAttribute("value", id_laboratorio)
+          document.getElementById("selectLaboratorio").appendChild(elemento);
+          arrayLaboratorio.push(laboratorio);
+        }
+
+    
+        duplicadoLaboratorio = false;
+
+      }
+    
+    // [
+    //   {
+    //     "name" : "dave",
+    //     "age" : "35",
+    //     "eye colour" : "blue"
+    //   }, {
+    //     "name" : "sarah",
+    //     "age" : "29",
+    //     "eye colour" : "brown"
+    //   }, {
+    //     "name" : "john",
+    //     "age" : "42",
+    //     "eye colour" : "green"
+    //   },
+    // ]
+  </script>
+
+{% endblock %}
+

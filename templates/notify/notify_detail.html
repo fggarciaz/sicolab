@@ -1,0 +1,31 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-7">
+                <h3>{{ object.pk }}</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <label>Fecha</label>
+                <p>{{ object.create_at}}</p>
+                <label>Tipo:</label>
+                {% if object.type_notify == 0 %}
+                    <p>Mensaje</p>
+                {% elif object.type_notify == 1 %}
+                    <p>Alerta</p>
+                {% else %}
+                    <p>Error</p>
+                {% endif %}
+                <label>Estado:</label>
+                {% if object.status == 0 %}
+                    <p>Visto</p>
+                {% else %}
+                    <p>No Visto</p>
+                {% endif %}
+                <label>Mensaje</label>
+                <p>{{ object.message}}</p>
+            </div>
+        </div>
+    </div>
+</div>

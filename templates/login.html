@@ -1,0 +1,43 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+Login | SICOLAB
+{% endblock %}
+
+{% block body %}
+<body class="bg-dark">
+  <div class="container">
+    <div class="card card-login mx-auto mt-5">
+      <div class="card-header">Login | SICOLAB</div>
+      <div class="card-body">
+        <h6 align="center">Sistema de Control de Laboratorios</h6>
+        <div align="center"><img src="../../static/images/sicolab.png" width=100 height=100></div>
+        <form method="post">
+          {% csrf_token %}
+
+          <div class="form-group">            
+            <label for="exampleInputUsername1">Nombre de usuario</label>
+            <input class="form-control" name="username" id="exampleInputUsername1" type="text" aria-describedby="usernameHelp" placeholder="Ingrese usuario">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input class="form-control" name="password" id="exampleInputPassword1" type="password" placeholder="Ingrese contraseña">
+          </div>
+          <div class="form-group">
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox"> Recordar Contraseña
+              </label>
+            </div>
+          </div>
+          <input class="btn btn-primary btn-block" type="submit" value="Ingresar">
+        </form>
+        <div class="text-center">
+          <!-- <a class="d-block small mt-3" href="register.html">Registrar una cuenta</a> -->
+          <a class="d-block small" href="{% url 'password_reset' %}">¿Olvidaste tu contraseña?</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock %}

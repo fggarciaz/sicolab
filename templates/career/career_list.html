@@ -1,0 +1,65 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'home:index' %}">Principal</a>
+        </li>
+        <li class="breadcrumb-item active">Lista de Carreras</li>
+      </ol>
+      <!-- Example DataTables Card-->
+      <div class="card mb-3">
+        <div class="card-header">
+          <div class="row d-flex">
+          <div class="col-md-9 mr-auto p-2">
+            <i class="fa fa-table"></i> Tabla | Carreras</div>             
+            <a class="btn btn-primary" href="{% url 'career:career_crear' %}" ><i class="fa fa-plus"></i> Nuevo </a>            
+            <a class="btn btn-light ml-1" href="{% url 'career:career_reporte' %}" target="_blank" > <i class="fa fa-file-pdf-o" ></i> Reporte </a></div>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th> N° </th>
+                  <th>Carrera</th>
+                  <th>Sección</th>
+                  <th>Acciones</th>               
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th> N° </th>
+                  <th>Carrera</th>
+                  <th>Sección</th>
+                  <th>Acciones</th>
+                </tr>
+              </tfoot>
+              <tbody>
+              	{% if object_list %}
+              	{% for career in object_list %}
+                <tr>
+                  <td>{{ career.id_car }}</td>
+                  <td>{{ career.name_car }}</td>
+                  <td>{{ career.section_car }}</td>
+                  <td>
+                  	<a class="btn btn-primary" href="{% url 'career:career_editar' career.id_car %}"> <i class="fa fa-fw fa-edit"></i> </a>
+                  	<a class="btn btn-danger" href="{% url 'career:career_eliminar' career.id_car %}"> <i class="fa fa-fw fa-trash"></i> </a>
+                  </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <h1> No hay registros de Carreras </h1>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer small text-muted">Carreras registradas</div>
+      </div>
+    </div>
+    <!-- /.container-fluid-->
+
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+  <div class="container">
+    <div class="card card-register mx-auto mt-5">
+      <div class="card-header">Registrar un Computador</div>
+      <div class="card-body">
+    <form method="post">
+      <div class="form-group">
+      {% csrf_token %}
+      {{ form.as_p }}
+              
+        <button class="btn btn-success btn-block" type="submit"> Registrar </button>
+        <a class="btn btn-info btn-block" href="{% url 'computer:computer_listar' %}"> Listar </a>
+      </div>
+    </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,102 @@
+{% extends 'base/base.html' %}
+{% load my_templatetag_session %}
+{% block content %}
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'home:index' %}">Principal</a>
+        </li>
+        <li class="breadcrumb-item active">Lista de Sessiones Internas</li>
+      </ol>
+      <!-- Example DataTables Card-->
+      <div class="card mb-3">
+        <div class="card-header">
+          <div class="row d-flex">
+            <div class="col-md-9 mr-auto p-2">
+               <i class="fa fa-table"></i> Tabla | Sesiones Internas
+            </div>
+           <a class="btn btn-light" href="{% url 'internal:internal_reporte' %}" target="_blank" > <i class="fa fa-file-pdf-o" ></i> Reporte </a>
+         </div>
+        </div>
+        
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>N°</th>                  
+                  <th>Hora Inicio</th>
+                  <th>Hora Fin</th>
+                  <th>Fin Sesión</th>
+                  <th>Estado</th>
+                  <th>Tipo</th>
+                  <th>Usuario</th>
+                  <th>Computadora</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>N°</th>
+                  <th>Hora Inicio</th>
+                  <th>Hora Fin</th>
+                  <th>Fin Sesión</th>
+                  <th>Estado</th>
+                  <th>Tipo</th>
+                  <th>Usuario</th>
+                  <th>Computadora</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                {% if object_list %}
+                {% for usuario in object_list %}
+                <tr>
+                  <td>{{ usuario.id_inter }}</td>
+                  <td>{{ usuario.start_time }}</td>
+                  <td>{{ usuario.finish_time }}</td>
+                  <td>{{ usuario.finish_session }}</td>
+                  <td>{% if usuario.status == 1 %}
+                        Activo
+                      {% else %}
+                        Inactivo
+                      {% endif %}
+                  </td>
+                  <td>
+                  {% if usuario.type_user == "S" %}
+                      Estudiante
+                  {% else %}
+                      Profesor
+                  {% endif %}
+                  </td>
+                    {% if usuario.type_user == "S" %}
+                      {% get_Student as query %}
+                      {% for q in query %}
+                          {% if q.id_stu == usuario.id_user %}
+                             <td>{{ q.names_stu }}</td>
+                          {% endif %}
+                      {% endfor %}
+                    {% else %}
+                      {% get_Teacher as query %}
+                        {% for q in query %}
+                            {% if q.id == usuario.id_user %}
+                               <td>{{ q.names_tea}}</td>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                
+                <td>{{ usuario.comp.name_comp }}</td> 
+                </tr>
+                {% endfor %}
+                {% else %}
+                <h1> No hay registros de Sesiones Internas </h1>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer small text-muted">Sesiones Internas registradas</div>
+      </div>
+    </div>
+    <!-- /.container-fluid-->
+
+{% endblock %}

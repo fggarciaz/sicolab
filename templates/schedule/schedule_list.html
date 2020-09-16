@@ -1,0 +1,224 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+
+<!-- Modal {% url 'schedule:schedule_reporte' %}-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <form action="{% url 'schedule:schedule_reporte' %}" method="POST">
+      {% csrf_token %}
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Reporte de Horarios</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <label>Filtrar por Periodo:</label>
+           <select class="form-control" id="selectPeriodo" name='selectPeriodo'>
+                  <option>Todos</option>
+                </select>
+               
+                <label>Filtrar por Laboratorio:</label>
+                <select class="form-control" id="selectLaboratorio" name="selectDocente">
+                  <option>Todos</option>
+                </select>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Generar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'home:index' %}">Principal</a>
+        </li>
+        <li class="breadcrumb-item active">Lista de Horarios</li>
+      </ol>
+      <!-- Example DataTables Card-->
+      <div class="card mb-3">
+        <div class="card-header">
+          <div class="row d-flex">
+          <div class="col-md-9 mr-auto p-2">
+            <i class="fa fa-table"></i> Tabla | Horarios</div>
+            <a class="btn btn-primary" href="{% url 'schedule:schedule_crear' %}" ><i class="fa fa-plus"></i> Nuevo </a>
+            <a class="btn btn-success ml-1" href="{% url 'schedule:schedule_import' %}" ><i class="fa fa-file-excel-o"></i> Importar </a>
+            
+             <a class="btn btn-light ml-1 r" data-toggle="modal" data-target="#exampleModal"> <i class="fa fa-file-pdf-o" ></i> Reporte </a>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">  
+              <thead>
+                <tr>
+                  <th> N° </th>                  
+                  <th>Día</th>
+                  <th>Hora Inicio</th>
+                  <th>Hora Fin</th>
+                  <th>Laboratorio</th> 
+                  <th>Semestre | Docente | Asignatura</th>
+                  <th hidden="">IdPeriodo</th>
+                  <th hidden="">Periodo</th>
+                  <th hidden="">IdLaboratorio</th> 
+                  <th hidden="">IdSemestre</th>
+                  <th hidden="">Semestre</th>
+                  <th>Acciones</th>       
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th> N° </th>                  
+                  <th>Día</th>
+                  <th>Hora Inicio</th>
+                  <th>Hora Fin</th>
+                  <th>Laboratorio</th> 
+                  <th>Semestre | Docente | Asignatura</th>
+                  <th hidden="">IdPeriodo</th>
+                  <th hidden="">Periodo</th>
+                  <th hidden="">IdLaboratorio</th> 
+                  <th hidden="">IdSemestre</th>
+                  <th hidden="">Semestre</th>
+                  <th>Acciones</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                {% if object_list %}
+                {% for schedule in object_list %}
+                <tr>
+                  <td>{{ schedule.id_sched }}</td>
+                  
+                  {% if schedule.day == '1' %}
+                  <td>Lunes</td>
+                  {% elif  schedule.day == '2' %}
+                  <td>Martes</td>
+                  {% elif  schedule.day == '3' %}
+                  <td>Miércoles</td>
+                  {% elif  schedule.day == '4' %}
+                  <td>Jueves</td>
+                  {% else %}
+                  <td>Viernes</td>
+                  {% endif %}
+                  <td>{{ schedule.hour_start }}</td>
+                  <td>{{ schedule.hour_end }}</td>
+                  <td>{{ schedule.lab }}</td>
+                  <td>{{ schedule.dist }}</td>
+                  <td hidden="">{{ schedule.dist.sta.id_sta }}</td>
+                  <td hidden="">{{ schedule.dist.sta.name_sta }}</td>
+                  <td hidden="">{{ schedule.lab.id_lab }}</td>
+                  <td hidden="">{{ schedule.dist.sem.id_sem }}</td>
+                  <td hidden="">{{ schedule.dist.sem }}</td>
+                  <td>
+                    <a class="btn btn-primary" href="{% url 'schedule:schedule_editar' schedule.id_sched %}"> <i class="fa fa-fw fa-edit"></i> </a>
+                    <a class="btn btn-danger" href="{% url 'schedule:schedule_eliminar' schedule.id_sched %}"> <i class="fa fa-fw fa-trash"></i> </a>
+                  </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <h1> No hay registros de Horarios </h1>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer small text-muted">Horarios registrados</div>
+      </div>
+    </div>
+    <!-- /.container-fluid-->
+
+
+
+     <script>
+
+
+function arrayify(collection) {
+  return Array.prototype.slice.call(collection);
+}
+
+function factory(headings) {
+  return function(row) {
+    return arrayify(row.cells).reduce(function(prev, curr, i) {
+      prev[headings[i]] = curr.innerText;
+      return prev;
+    }, {});
+  }
+}
+
+
+function parseTable(table) {
+  var headings = arrayify(table.tHead.rows[0].cells).map(function(heading) {
+    return heading.innerText;
+  });
+  return arrayify(table.tBodies[0].rows).map(factory(headings));
+}
+
+    var arrayPeriodo = [];
+    var arrayLaboratorio = [];
+
+    var duplicadoPerido = false;
+    var duplicadoLaboratorio = false;
+
+    var table = document.querySelector("table");
+    var data  = parseTable(table);
+    console.log(data);
+
+    for (var i=0; i<data.length; i++){
+
+      var periodo = data[i]['Periodo'];
+      var laboratorio = data[i]['Laboratorio'];
+      var id_periodo = data[i]['IdPeriodo'];
+      var id_laboratorio = data[i]['IdLaboratorio'];
+
+      //For para verificar periodos
+      for (var a = 0; a < arrayPeriodo.length; a++){
+          if (arrayPeriodo[a] == periodo){
+            duplicadoPerido = true;
+            break;
+          }
+        }
+
+    
+
+        //For para verificar docentes
+      for (var c = 0; c < arrayLaboratorio.length; c++){
+          if (arrayLaboratorio[c] == laboratorio){
+
+            duplicadoLaboratorio = true;
+            break;
+          }
+        }
+
+        //Agregar periodo al select
+        if (duplicadoPerido == false){
+          var elemento = document.createElement("option");
+          elemento.appendChild(document.createTextNode(periodo));
+          elemento.setAttribute("value", id_periodo)
+          document.getElementById("selectPeriodo").appendChild(elemento);
+          arrayPeriodo.push(periodo);
+        }
+
+    
+        //Agregar docente al select
+        if (duplicadoLaboratorio == false){
+          var elemento = document.createElement("option");
+          elemento.appendChild(document.createTextNode(laboratorio));
+          elemento.setAttribute("value", id_laboratorio)
+          document.getElementById("selectLaboratorio").appendChild(elemento);
+          arrayLaboratorio.push(laboratorio);
+        }
+        duplicadoPerido = false;
+        duplicadoLaboratorio = false;
+      }
+
+  </script>
+
+{% endblock %}

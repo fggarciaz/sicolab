@@ -1,0 +1,56 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+  <div class="container">
+    <div class="card card-register mx-auto mt-5">
+      <div class="card-header">Actualizar un usuario</div>
+      <div class="card-body">
+    		<form method="post" >
+          {% csrf_token %}
+    		  
+          <div class="form-group">        
+            <div class="form-row">
+              <div class="col-md-6">
+                 <label name="first_name" for="{{ form.first_name.name }}">{{ form.first_name.label }}</label>
+                    {{ form.first_name }}
+              </div>                     
+
+              <div class="col-md-6">
+                   <label name="last_name" for="{{ form.last_name.name }}">{{ form.last_name.label }}</label>
+                    {{ form.last_name }}
+
+              </div>
+            </div>
+          </div>
+          <div class="form-group">        
+            <div class="form-row">
+              <div class="col-md-6">
+                <label name="username" for="{{ form.username.name }}">{{ form.username.label }}</label>
+                    {{ form.username }}
+          
+              </div>                       
+              <div class="col-md-6">
+                 <label name="email" for="{{ form.email.name }}">{{ form.email.label }}</label>
+                    {{ form.email }}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">        
+            <div class="form-row">
+              <div class="col-md-4">
+                <label name="is_active" for="{{ form.is_active.name }}">{{ form.is_active.label }}</label>
+                  {{ form.is_active }}
+
+              </div>                       
+            </div>
+          </div>
+
+            <button class="btn btn-success btn-block" type="submit"> Actualizar </button>
+            <a class="btn btn-primary btn-block" href="{% url 'usuario:listar' %}"> Cancelar </a>
+
+          </div>
+    		</form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

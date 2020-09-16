@@ -1,0 +1,148 @@
+{% extends 'base/base.html' %}
+{% load my_templatetag %}
+{% block content %}
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active"></li>
+      </ol>
+      <!-- Example DataTables Card-->
+      <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-table"></i> Data Table | Notificación</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table id="tabla" class="table table-bordered" width="100%" cellspacing="0">
+              <thead>
+                <tr >
+                  <th> N° </th>
+                  <th>Mensaje</th>
+                  <th>Status</th>
+                  <th>Tipo</th>  
+                  <th>Fecha y Hora</th>  
+                  <th>Acción</th>              
+                </tr>
+              </thead>
+              <tbody>
+                {% if object_list %}
+                {% for not in object_list %}
+                <tr WIDTH="3" HEIGHT="3">
+                  {% if not.status == 0 %}
+
+                        <td >{{ not.id }}</td>
+                        <td>{{ not.message }}</td>
+                        <td>{% if not.status == 0 %}
+                              Leido
+                            {% else %}
+                              No Leido
+                            {% endif%}
+                        </td> 
+                        <td>
+                          {% if not.type_notify == 0  %}
+                            Error 
+                          {% elif not.type_notify == 1 %}
+                            Usuario
+                          {% else %}
+                            falla
+                          {% endif %}
+                        </td> 
+                        <td >{{ not.create_at }}</td>
+                        <td>
+                           <a > <i class="fa fa-eye-slash" style="font-size:30px;color:green "></i> </a>
+                        </td>
+                  {% else %}
+
+                        <td bgcolor="Aqua ">{{ not.id }}</td>
+                        <td bgcolor="Aqua ">{{ not.message }}</td>
+                        <td bgcolor="Aqua ">{% if not.status == 0 %}
+                              Leido
+                            {% else %}
+                              No Leido
+                            {% endif%}
+                        </td bgcolor="Aqua "> 
+                        <td bgcolor="Aqua ">
+                          {% if not.type_notify == 0  %}
+                            Error 
+                          {% elif not.type_notify == 1 %}
+                            Usuario
+                          {% else %}
+                            falla
+                          {% endif %}
+                        </td> 
+                        <td bgcolor="Aqua ">{{ not.create_at }}</td>
+                        <td > 
+                          <a id="buttonIcon" class="modal-trigger" data-toggle="modal" data-target="#exampleModal1" data-whatever="@mdo" data-url="{{not.message}}" data-fecha="{{not.create_at}}" data-message="Mensaje" data-id={{not.id}} class="btn">
+                            <i class="fa fa-eye" style="font-size:30px;color:green "></i> 
+                          </a>
+                           
+                        </td>
+                  {% endif %}
+                </tr>
+                {% endfor %}
+                {% endif %}
+              </tbody>
+            </table>
+            <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                <div class="modal-dialog" role="document" style="max-width: 40%;">
+                  <div class="modal-content" >
+                    <div class="modal-header">
+                      <h6 class="modal-title" id="exampleModalLabel"></h6>
+                    </div>
+                    <div id="content_form_modal" class="modal-body">
+                    </div>
+                    <div id="aux" class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                      <input id="save_ok" type="submit" onclick="update_notify()"  data-id="" class="btn btn-primary" name="submit" data-dismiss="modal" value="OK" href="notify:notify_listar" >
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="card-footer small text-muted">Notificaciones</div>
+      </div>
+          <script type="text/javascript">
+
+            $('#exampleModal1').on('show.bs.modal', function (event) {
+                        var button = $(event.relatedTarget) // Button that triggered the modal
+                        var recipient = button.data('whatever') // Extract info from data-* attributes
+                        var mess = button.data('url')
+                        var message = button.data('message')
+                        var fecha = button.data('fecha')
+                        var id= button.data('id')
+                        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                        var modal1 = $(this)
+                        modal1.find('.modal-title').text(message)
+                        modal1.find('.modal-header').text(fecha);
+                        modal1.find('.modal-body').text(mess);
+                        modal1.find('.modal-footer #save_ok').data(id);
+                        
+              })  
+             function update_notify()
+             {
+                var id = $("#save_ok").data('id')
+                $("#content_form_modal").empty();
+                              $.getJSON("/sicolab/notificacion/update/", data = {'id':id}, function( data ) {
+              
+                                if(data.status=="1"){
+                                  console.log("modificado corectamente")                                 
+                                }else
+                                {
+                                  console.log("Error")
+                                }
+                              }).fail(function(xhr, ajaxOptions, thrownError) {
+                                    console.log(xhr.status);
+                                    console.log(thrownError);
+                              });
+
+                            
+             } 
+          </script>           
+    </div>
+    <!-- /.container-fluid-->
+
+{% endblock %}

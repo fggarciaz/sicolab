@@ -1,0 +1,95 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'home:index' %}">Principal</a>
+        </li>
+        <li class="breadcrumb-item active">Actividad en Laboratorios</li>
+      </ol>
+      <h2>Actividad en Laboratorios</h2>
+      <hr>
+      <!-- Icon Cards-->
+      <div class="row">
+        
+      	
+        {% for lab in object_list %}
+        {% with contador=0 %}
+        <div class="col-xl-4 col-sm-6 mb-3">
+          <!-- <div class="card text-white bg-secondary o-hidden h-100"> -->
+          {% for comp in computer_list %}
+            {% if comp.lab_id == lab.id_lab %}
+              
+              {% for int in session_list %}
+                {% if int.comp_id == comp.id_comp %}
+                  {% if int.status == 1 %}
+
+                    
+                    <!-- Este contador solo se aumenta de manera temporal en ese momento y no se aumenta :(  -->
+                    <!-- X eso queria ver si habia otra forma :'(  -->
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            
+            {% endif %}
+          {% endfor %}
+
+          {% if contador > 0 %}
+            <div class="card text-white bg-info o-hidden h-100">
+                 
+          {% else %}
+            <div class="card text-white bg-info o-hidden h-100">
+              
+
+          {% endif %}
+
+            <div class="card-body">
+              <div class="card-body-icon">
+                <i class="fa fa-fw fa-laptop"></i>
+              </div>
+              <div class="mr-5"><b> {{ lab.name_lab }} </b></div>
+              {% for sche in schedule_list %}              
+                {% if sche.lab_id == lab.id_lab %}
+                  <div class="mr-5"> De {{ sche.hour_start }} a {{ sche.hour_end }}</div>
+
+                  {% for dis in distributive_list %}                  
+                      {% if dis.id_dist == sche.dist_id %}
+
+                        {% for sub in subject_list %}                        
+                            {% if sub.id_sub == dis.sub_id %}
+                              <div class="mr-5">{{ sub.name_sub }} </div>
+                              <div class="mr-5">{{ dis.sem }} </div>
+                            {% endif %}    
+                        {% endfor %}
+
+                        {% for tea in teacher_list %}
+                            {% if tea.id_tea == dis.tea_id %}
+                              <div class="mr-5">{{ tea.names_tea }}</div>
+                            {% endif %}    
+                        {% endfor %}
+
+                      {% endif %}    
+                  {% endfor %}
+
+                {% endif %}    
+              {% endfor %}
+            </div>
+            <a class="card-footer text-white clearfix small z-1">
+              <span class="float-left"><strong>Información</strong></span>
+              <!-- <span class="float-right">
+                <i class="fa fa-angle-right"></i>
+              </span> -->
+            </a>
+          </div>
+        </div>
+
+        {% endwith %}
+        {% endfor %}
+
+        
+      </div>
+    </div>
+
+{% endblock %}

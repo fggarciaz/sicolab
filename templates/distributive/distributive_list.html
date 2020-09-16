@@ -1,0 +1,296 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <!-- Button trigger modal -->
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <form action="{% url 'distributive:distributive_reporte' %}" method="POST">
+      {% csrf_token %}
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Reporte de Distributivo</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <label>Filtrar por Periodo:</label>
+           <select class="form-control" id="selectPeriodo" name='selectPeriodo'>
+                  <option>Todos</option>
+                </select>
+                <label>Filtrar por Semestre:</label>
+                <select class="form-control" id="selectSemestre" name="selectSemestre">
+                  <option>Todos</option>
+                </select>
+                <label>Filtrar por Docente:</label>
+                <select class="form-control" id="selectDocente" name="selectDocente">
+                  <option>Todos</option>
+                </select>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Generar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'home:index' %}">Principal</a>
+        </li>
+        <li class="breadcrumb-item active">Lista de Distributivo</li>
+      </ol>
+      <!-- Example DataTables Card-->
+      <div class="card mb-3">
+        <div class="card-header">
+          <div class="row d-flex">
+          <div class="col-md-9 mr-auto p-2">
+            <i class="fa fa-table"></i> Tabla | Distributivo</div>    
+            <a class="btn btn-primary" href="{% url 'distributive:distributive_crear' %}" ><i class="fa fa-plus"></i> Nuevo </a>
+
+            <a class="btn btn-light ml-1 r" data-toggle="modal" data-target="#exampleModal"> <i class="fa fa-file-pdf-o" ></i> Reporte </a>
+            <!--<a class="btn btn-light ml-1 r" href="{% url 'distributive:distributive_reporte' %}" target="_blank" > <i class="fa fa-file-pdf-o" ></i> Reporte </a>-->
+
+       
+
+<!--       
+ Button trigger modal 
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Launch demo modal
+</button> -->
+
+
+
+          </div>
+        </div>          
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th> N° </th>                 
+                  <th>Periodo</th>
+                  <th hidden="">IdPeriodo</th>
+                  <th>Semestre</th>
+                  <th hidden="">IdSemestre</th>
+                  <th>Docente</th>
+                  <th hidden="">IdDocente</th>
+                  <th>Asignatura</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th> N° </th>
+                  <th>Periodo</th>
+                  <th hidden="">IdPeriodo</th>
+                  <th>Semestre</th>
+                  <th hidden="">IdSemestre</th>
+                  <th>Docente</th>
+                  <th hidden="">IdDocente</th>
+                  <th>Asignatura</th>
+                  <th>Acciones</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                {% if object_list %}
+                {% for distributive in object_list %}
+                <tr>
+                  <td>{{ distributive.id_dist }}</td>                  
+                  <td>{{ distributive.sta }}</td>
+                  <td hidden="">{{ distributive.sta.id_sta }}</td>
+                  <td>{{ distributive.sem }}</td>
+                  <td hidden="">{{ distributive.sem.id_sem }}</td>
+                  <td>{{ distributive.tea }}</td>
+                  <td hidden="">{{ distributive.tea.id_tea }}</td>
+                  <td>{{ distributive.sub }}</td>
+                  <td>
+                    <a class="btn btn-primary" href="{% url 'distributive:distributive_editar' distributive.id_dist %}"> <i class="fa fa-fw fa-edit"></i> </a>
+                    <a class="btn btn-danger" href="{% url 'distributive:distributive_eliminar' distributive.id_dist %}"> <i class="fa fa-fw fa-trash"></i> </a>
+                  </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <h1> No hay registros de Distributivos </h1>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer small text-muted">Distributivos registrados</div>
+      </div>
+    </div>
+    <!-- /.container-fluid-->
+
+
+
+
+
+     <script type="text/javascript">
+
+    
+    window.onload = function() { 
+      
+     
+      //var tabla = document.getElementById("tabla");
+
+
+       /*var li = tabla.getElementsByTagName("td");
+       for (var i = 0; i < li.length; i++){
+        if(i/i = 0){
+          var contenido = 
+        }
+        var res = li[i].length;
+        console.log(res);
+      }*/
+
+       /*for (var i = 0; i < li.length; i++){
+          var num = li[i].length;
+          console.log(num);
+
+        for (var x = 0; x < num; x++){
+          console.log("numero "+i + "de: " + x);
+        }
+        
+       
+      }
+      */
+      
+    }
+
+  
+
+
+    </script>
+
+
+
+  <script>
+
+
+function arrayify(collection) {
+  return Array.prototype.slice.call(collection);
+}
+
+function factory(headings) {
+  return function(row) {
+    return arrayify(row.cells).reduce(function(prev, curr, i) {
+      prev[headings[i]] = curr.innerText;
+      return prev;
+    }, {});
+  }
+}
+
+
+function parseTable(table) {
+  var headings = arrayify(table.tHead.rows[0].cells).map(function(heading) {
+    return heading.innerText;
+  });
+  return arrayify(table.tBodies[0].rows).map(factory(headings));
+}
+
+    var arrayPeriodo = [];
+    var arraySemestre = [];
+    var arrayDocente = [];
+
+    var duplicadoPerido = false;
+    var duplicadoSemestre = false;
+    var duplicadoDocente = false;
+
+    var table = document.querySelector("table");
+    var data  = parseTable(table);
+    console.log(data);
+
+    for (var i=0; i<data.length; i++){
+
+      var periodo = data[i]['Periodo'];
+      var semestre = data[i]['Semestre'];
+      var docente = data[i]['Docente'];
+      var id_periodo = data[i]['IdPeriodo'];
+      var id_semestre = data[i]['IdSemestre'];
+      var id_docente = data[i]['IdDocente'];
+
+      //For para verificar periodos
+      for (var a = 0; a < arrayPeriodo.length; a++){
+          if (arrayPeriodo[a] == periodo){
+            duplicadoPerido = true;
+            break;
+          }
+        }
+
+        //For para verificar semestres
+      for (var b = 0; b < arraySemestre.length; b++){
+          if (arraySemestre[b] == semestre){
+            duplicadoSemestre = true;
+            break;
+          }
+        }
+
+        //For para verificar docentes
+      for (var c = 0; c < arrayDocente.length; c++){
+          if (arrayDocente[c] == docente){
+
+            duplicadoDocente = true;
+            break;
+          }
+        }
+
+        //Agregar periodo al select
+        if (duplicadoPerido == false){
+          var elemento = document.createElement("option");
+          elemento.appendChild(document.createTextNode(periodo));
+          elemento.setAttribute("value", id_periodo)
+          document.getElementById("selectPeriodo").appendChild(elemento);
+          arrayPeriodo.push(periodo);
+        }
+
+        //Agregar semestre al select
+        if (duplicadoSemestre == false){
+          var elemento = document.createElement("option");
+          elemento.appendChild(document.createTextNode(semestre));
+          elemento.setAttribute("value", id_semestre)
+          document.getElementById("selectSemestre").appendChild(elemento);
+          arraySemestre.push(semestre);
+        }
+
+        //Agregar docente al select
+        if (duplicadoDocente == false){
+          var elemento = document.createElement("option");
+          elemento.appendChild(document.createTextNode(docente));
+          elemento.setAttribute("value", id_docente)
+          document.getElementById("selectDocente").appendChild(elemento);
+          arrayDocente.push(docente);
+        }
+        duplicadoPerido = false;
+        duplicadoSemestre = false;
+        duplicadoDocente = false;
+      }
+    
+    // [
+    //   {
+    //     "name" : "dave",
+    //     "age" : "35",
+    //     "eye colour" : "blue"
+    //   }, {
+    //     "name" : "sarah",
+    //     "age" : "29",
+    //     "eye colour" : "brown"
+    //   }, {
+    //     "name" : "john",
+    //     "age" : "42",
+    //     "eye colour" : "green"
+    //   },
+    // ]
+  </script>
+
+{% endblock %}

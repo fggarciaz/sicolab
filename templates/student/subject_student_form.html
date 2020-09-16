@@ -1,0 +1,162 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+  <div class="container">
+    <div class="card mx-auto mt-5">
+            <div class="card-header">
+              <div class="row d-flex">
+              <div class="col-md-3 mr-auto p-2 ">
+                Registrar Asignaturas
+              </div>        
+              <div class="ml-auto">
+                <label for="selectPeriodo">Seleccionar periodo:</label>
+              </div>
+              <div class="col-md-3 justify-content-end">
+                <select class="form-control" id="selectPeriodo" onchange="onChange(event)">
+                  <option>Todos</option>
+                </select>
+              </div>
+
+            </div>
+            </div>
+
+            <div class="card-body">
+              <form method="post">
+                {% csrf_token %}
+
+                <div hidden="hidden">
+                                     
+                  <div class="form-group">        
+                    <div class="form-row">
+                      <div class="col-md-12">
+                        <label for="{{ form.dni_stu.name }}">{{ form.dni_stu.label }}</label>
+                        {{ form.dni_stu }}
+                      </div> 
+                    </div>
+                  </div>                      
+                      
+                  <div class="form-group">        
+                    <div class="form-row">
+                      <div class="col-md-12">
+                        <label for="{{ form.password_stu.name }}">{{ form.password_stu.label }}</label>
+                        {{ form.password_stu }}
+                      </div> 
+                    </div>
+                  </div>    
+            
+                  <div class="form-group">        
+                    <div class="form-row">
+                      <div class="col-md-12">
+                        <label for="{{ form.names_stu.name }}">{{ form.names_stu.label }}</label>
+                        {{ form.names_stu }}
+                      </div> 
+                    </div>
+                  </div>                      
+                      
+                  <div class="form-group">        
+                    <div class="form-row">
+                      <div class="col-md-12">
+                        <label for="{{ form.email_stu.name }}">{{ form.email_stu.label }}</label>
+                        {{ form.email_stu }}
+                      </div> 
+                    </div>
+                  </div>  
+
+                  <div class="form-group">        
+                    <div class="form-row">
+                      <div class="col-md-12">
+                        <label for="{{ form.status_stu.name }}">{{ form.status_stu.label }}</label>
+                        {{ form.status_stu }}
+                      </div> 
+                    </div>
+                  </div>  
+
+                </div>
+
+
+                  <div class="form-group">        
+                    <div class="form-row">
+                      <div class="col-md-12">
+                        <label  for="{{ form.dist.name }}">{{ form.dist.label }}</label>
+                        {{ form.dist }}
+                      </div> 
+                    </div>
+                  </div>  
+
+                 
+                  
+                  <div class="row d-flex flex-row-reverse">
+                    
+                      <button class="btn btn-primary mr-3" type="submit"> Registrar </button>
+                      <a class="btn btn-default" href="{% url 'student:subject_student_listar' %}"> Cancelar </a>                      
+                          
+                  </div>
+                
+              </form>
+
+            </div>
+          
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    
+    window.onload = function() { 
+      
+      var listado = document.getElementById("listado");
+      var li = listado.getElementsByTagName("label");
+      var opciones = [];
+      var duplicado = false;
+
+     for (var i = 0; i < li.length; i++){
+        var res = li[i].textContent.split("|");
+        for (var x = 0; x < opciones.length; x++){
+          if (opciones[x] == res[0]){
+            duplicado = true;
+            break;
+          }
+        }
+        if (duplicado == false){
+          var elemento = document.createElement("option");
+          elemento.appendChild(document.createTextNode(res[0]));
+          document.getElementById("selectPeriodo").appendChild(elemento);
+          opciones.push(res[0]);
+        }
+        duplicado = false;
+      }
+    }
+
+    function onChange(event) {
+      var seleccion = document.getElementById("selectPeriodo");
+      var opcion = seleccion.options[seleccion.selectedIndex].value;
+      console.log("Esta es la opcion seleccionada: "+opcion + " el tipo es: " + typeof(opcion));
+      if (opcion == "Todos"){
+        var li = document.getElementById("listado").getElementsByTagName("li");
+        for (var i=0; i<li.length; i++){
+          li[i].removeAttribute("hidden");
+        }
+      }else{
+        var li = document.getElementById("listado").getElementsByTagName("li");
+        /*for (var i=0; i<li.length; i++){
+          li[i].setAttribute("hidden", "");
+        }*/
+
+        for (var i=0; i<li.length; i++){
+          var res = li[i].getElementsByTagName("label")[0].textContent.split("|");
+          if(res[0].trim() === opcion.trim()){
+            li[i].removeAttribute("hidden");
+          }else{
+            li[i].setAttribute("hidden", "");
+          }
+          
+        }
+        
+
+      }
+    }
+
+
+    </script>
+
+
+{% endblock %}

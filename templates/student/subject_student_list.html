@@ -1,0 +1,81 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'home:index' %}">Principal</a>
+        </li>
+        <li class="breadcrumb-item active">Lista de Estudiantes y Asignaturas</li>
+      </ol>
+      <!-- Example DataTables Card-->
+      <div class="card mb-3">
+        <div class="card-header">
+          <div class="row d-flex">
+          <div class="col-md-9 mr-auto p-2">
+            <i class="fa fa-table"></i> Tabla | Estudiantes - Asignaturas</div>        
+          </div>
+        </div>  
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th> N° </th>
+                  <th>Cédula</th>
+                  <th>Estudiante</th>
+                  <th>Asignaturas</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th> N° </th>
+                  <th>Cédula</th>
+                  <th>Estudiante</th>
+                  <th>Asignaturas</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </tfoot>
+              <tbody>
+              	{% if object_list %}
+              	{% for student in object_list %}
+                <tr>
+                  <td>{{ student.id_stu }}</td>
+                  <td>{{ student.dni_stu }}</td>
+                  <td>{{ student.names_stu }}</td>
+                  <td>{% if student.dist.count != 0 %}
+                        {% for asig in student.dist.all %}
+                        {{ asig }} <br>  
+                        {% endfor %}
+                      {% else %}
+                      <em><s>Sin asignaturas</s></em>
+                      {% endif %}
+                  </td>
+                  <td>{% if student.status_stu == 1 %}
+                        Activo
+                      {% else %}
+                        Inactivo
+                      {% endif %}
+                  </td>
+                  <td>
+                  	<a class="btn btn-primary" href="{% url 'student:subject_student_editar' student.id_stu %}"> <i class="fa fa-fw fa-edit"></i> Editar Asignaturas</a>
+                  </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <h1> No hay registros de Estudiantes </h1>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer small text-muted">Estudiantes registrados</div>
+      </div>
+    </div>
+    <!-- /.container-fluid-->
+
+{% endblock %}

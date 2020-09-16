@@ -1,0 +1,82 @@
+
+
+
+{% extends 'base/base.html' %}
+
+{% block content %}
+  <div class="container">
+    <div class="card card-register mx-auto mt-5">
+            <div class="card-header">Registrar Horarios</div>
+            <div class="card-body">
+              <form method="post">
+                {% csrf_token %}
+            
+                  <div class="form-group">        
+                    <div class="form-row">
+                      <div class="col-md-4">
+                          <label for="{{ form.day.name }}">{{ form.day.label }}</label>
+                          {{ form.day }}
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="{{ form.hour_start.name }}">{{ form.hour_start.label }}</label>
+                        <div class="input-group">
+                          {{ form.hour_start }}
+                          <div class="input-group-addon">
+                              <i class="fa fa-clock-o"></i>
+                          </div>
+                        </div>
+                      </div>
+                    
+                      <div class="col-md-4">
+                        <label for="{{ form.hour_end.name }}">{{ form.hour_end.label }}</label>
+                        <div class="input-group">
+                          {{ form.hour_end }}
+                          <div class="input-group-addon">
+                              <i class="fa fa-clock-o"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div> 
+                  </div>                       
+                  
+            
+                  <div class="form-group">        
+                    <div class="form-row">
+                      <div class="col-md-12">
+                        <label for="{{ form.lab.name }}">{{ form.lab.label }}</label>
+                        {{ form.lab }}
+                      </div> 
+                    </div>
+                  </div>                      
+                      
+                  <div class="form-group">        
+                    <div class="form-row">
+                      <div class="col-md-12">
+                        <label for="{{ form.dist.name }}">{{ form.dist.label }}</label>
+                        {{ form.dist }}
+                      </div> 
+                    </div>
+                  </div>    
+            
+                  
+                  <div class="row d-flex flex-row-reverse">
+                    
+                      <button class="btn btn-primary mr-3" type="submit"> Registrar </button>
+                      <a class="btn btn-default" href="{% url 'schedule:schedule_listar' %}"> Cancelar </a>                      
+                          
+                  </div>
+                
+              </form>
+
+            </div>
+          
+    </div>
+  </div>
+{% endblock %}
+
+
+
+
+
+

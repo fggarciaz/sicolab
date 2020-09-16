@@ -1,0 +1,72 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'home:index' %}">Principal</a>
+        </li>
+        <li class="breadcrumb-item active">Lista de Semestres</li>
+      </ol>
+      <!-- Example DataTables Card-->
+      <div class="card mb-3">
+        <div class="card-header">
+          <div class="row d-flex">
+          <div class="col-md-9 mr-auto p-2">
+            <i class="fa fa-table"></i> Tabla | Semestres</div>        
+            <a class="btn btn-primary" href="{% url 'semester:semester_crear' %}" ><i class="fa fa-plus"></i> Nuevo </a>
+            <a class="btn btn-light ml-1" href="{% url 'semester:semester_reporte' %}" target="_blank"><i class="fa fa-file-pdf-o"></i> Reporte </a>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th> N° </th>
+                  <th>Semestre</th>
+                  <th>Paralelo</th>
+                  
+                  <th>Carrera</th>
+                  <th>Acciones</th>               
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th> N° </th>
+                  <th>Semestre</th>
+                  <th>Paralelo</th>
+                  
+                  <th>Carrera</th>
+                  <th>Acciones</th> 
+                </tr>
+              </tfoot>
+              <tbody>
+              	{% if object_list %}
+              	{% for semester in object_list %}
+                <tr>
+                  <td>{{ semester.id_sem }}</td>
+                  <td>{{ semester.name_sem }}</td>
+                  <td>{{ semester.parallel_sem }}</td>
+                  
+                  <td>{{ semester.car }}</td>
+                  <td>
+                  	<a class="btn btn-primary" href="{% url 'semester:semester_editar' semester.id_sem %}"> <i class="fa fa-fw fa-edit"></i> </a>
+                  	<a class="btn btn-danger" href="{% url 'semester:semester_eliminar' semester.id_sem %}"> <i class="fa fa-fw fa-trash"></i> </a>
+                  </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <h1> No hay registros de Semestres </h1>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer small text-muted">Semestres registrados</div>
+      </div>
+    </div>
+    <!-- /.container-fluid-->
+
+{% endblock %}

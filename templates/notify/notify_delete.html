@@ -1,0 +1,82 @@
+{% extends 'base/base.html' %}
+{% load my_templatetag %}
+{% block content %}
+  <div class="container">
+    <div class="card card-register mx-auto mt-5">
+      <div class="card-header">
+          <div class="card-body">
+            <form method="post">
+                <div class="form-group">
+                    <form class="form-horizontal" role="form">
+                        {% csrf_token %}
+                      <div class="form-group">
+                        <label class="col-lg-8 control-label"><h4> Fecha y Hora de notificación:</h4></label>
+                        <div class="col-lg-10">
+                          <p class="form-control-static">{{ object.create_at }}</p>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-8 control-label"><h4>Tipo de Notificación:</h4></label>
+                        <div class="col-lg-10">
+                            {% if object.type_notify == 1 %}
+                                <p class="form-control-static"> Usuario </p>
+                            {% elif object.type_notify == 2 %}
+                                <p class="form-control-static"> Error </p>
+                            {% else %}
+                                <p class="form-control-static"> Existe problema de envio </p>  
+                            {% endif %}
+                          
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-8 control-label"><h4> Mensaje: </h4></label>
+                        <div class="col-lg-10">
+                          <p class="form-control-static">{{ object.message }}</p>
+                        </div>
+                      </div>
+
+                      {% if object.type_notify == 1 %}
+                      <div class="form-group">
+                        <label class="col-lg-8 control-label"><h4> Usuario: </h4></label>
+                        <div class="col-lg-10">
+                          
+                                {% get_Profe as query1 %}
+                                    {% for q1 in query1 %}
+                                        {% if q1.dni_tea == object.ci %}
+                                        <p class="form-control-static">{{ q1.names_tea}}</p>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% get_Studen as query %}
+                                    {% for q in query %}
+                                        {% if q.dni_stu == object.ci %}
+                                        <p class="form-control-static">{{ q.names_stu}}</p>
+                                        {% endif %}
+                                    {% endfor %}
+                                     
+                        </div>
+                      </div>
+                      {% endif %}
+
+                      <div class="form-group">
+                        <label class="col-lg-8 control-label"><h4> Laboratorio: </h4></label>
+                        <div class="col-lg-10">
+                          <p class="form-control-static">{{ object.comp.lab.name_lab }}</p>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-8 control-label"><h4> Computadora: </h4></label>
+                        <div class="col-lg-10">
+                          <p class="form-control-static">{{ object.comp.name_comp }}</p>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <p style="line-height: 70px; text-align: center;"><button class="btn btn-success btn-lg " class="trans text-center"  type="submit"> ACEPTAR </button></p>
+                      </div>
+                    </form>   
+                </div>
+            </form>
+          </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

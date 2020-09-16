@@ -1,0 +1,66 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Lista de Estudiantes</li>
+      </ol>
+      <!-- Example DataTables Card-->
+      <div class="card mb-3">
+        <form method="get" action="{% url 'student:student_cargarBase' %}">
+        <div class="card-header">
+          <div class="row d-flex"><div class="col-md-9 mr-auto p-2">
+          <i class="fa fa-table"></i> Datos Excel </div>
+          <!--<a href= "jsjsjsj" name="enlace" >{{ruta}}</a> -->
+          <input type="" name="enlace" value={{ruta}} hidden="">
+          <a class="btn btn-primary" href="{% url 'student:student_listar' %}"> Cancelar </a>   
+          <button type="submit" class="btn btn-success ml-2" name="">Cargar a base de datos</button>
+        </div>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <tbody>
+              {% if error == "" %}
+                <div class="alert alert-success">Datos correctos</div>   
+              {% else %}
+                <div class="alert alert-danger">{{ error }}</div>
+              {% endif %}
+            </tbody>
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+               <!-- <tr>
+                  <th> N° </th>
+                  <th>Computador</th>
+                             
+                </tr>-->
+              </thead>
+              
+              <tbody>
+              	{% if lista %}
+              	{% for datos in lista %}
+                <tr>
+                  {% for a in datos %}
+                
+                  <td>{{ a }}</td>
+               
+                  {% endfor %}
+                  </tr>
+                {% endfor %}
+                {% else %}
+                <h1> Archivo sin datos que procesar </h1>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer small text-muted">Estudiantes leidos en archivo de Excel</div>
+      </div>
+      </form>
+    </div>
+    <!-- /.container-fluid-->
+
+{% endblock %}

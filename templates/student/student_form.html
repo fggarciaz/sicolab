@@ -1,0 +1,63 @@
+a{% extends 'base/base.html' %}
+
+{% block content %}
+  <div class="container">
+    <div class="card card-register mx-auto mt-5">
+      <div class="card-header">Registrar un Estudiante</div>
+      <div class="card-body">
+        <form method="post">
+          <div class="form-group">
+          {% csrf_token %}
+            <div class="form-group">        
+              <div class="form-row">
+                  <div class="col-md-12">
+                    <label for="{{ form.dni_stu.name }}">{{ form.dni_stu.label }}</label>
+                    {{ form.dni_stu }}
+                  </div> 
+              </div>
+            </div>                  
+      
+            <div class="form-group">        
+              <div class="form-row">
+                <div class="col-md-12">
+                  <label for="{{ form.names_stu.name }}">{{ form.names_stu.label }}</label>
+                  {{ form.names_stu }}                  
+                </div> 
+              </div>
+            </div>
+
+            <div class="form-group">        
+              <div class="form-row">
+                <div class="col-md-12">
+                  <label for="{{ form.password_stu.name }}">{{ form.password_stu.label }}</label>
+                  {{ form.password_stu }}                  
+                </div> 
+              </div>
+            </div>                                          
+                
+            <div class="form-group">        
+              <div class="form-row">
+                <div class="col-md-12">
+                  <label for="{{ form.email_stu.name }}">{{ form.email_stu.label }}</label>
+                  {{ form.email_stu }}
+                </div> 
+              </div>
+            </div>  
+
+            <div class="form-group">        
+              <div class="form-row">
+                <div class="col-md-12">
+                  <label for="{{ form.status_stu.name }}">{{ form.status_stu.label }}</label>
+                  {{ form.status_stu }}
+                </div> 
+              </div>
+            </div>  
+                  
+            <button class="btn btn-success btn-block" type="submit"> Registrar </button>
+            <a class="btn btn-info btn-block" href="{% url 'student:student_listar' %}"> Listar </a>
+          </div>
+        </form>
+      </div>
+    </div><br><br>
+  </div>
+{% endblock %}

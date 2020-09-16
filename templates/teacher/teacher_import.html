@@ -1,0 +1,39 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+  <div class="container">
+    <div class="card card-register mx-auto mt-5">
+      <div class="card-header">Importar datos Docentes</div>
+      <div class="card-body">
+
+
+
+      <form method="post" action="{% url 'teacher:teacher_cargarExcel' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="row">
+            <div class="form-group">
+              <label for="file">Seleccione archivo:</label>
+              
+                      
+                        <input id="file" name="archivo" type="file" class="form-control-file"/>
+            </div>
+        </div>
+        <div class="row d-flex justify-content-end mt-3 mr-auto">
+        <a class="btn btn-primary" href="{% url 'teacher:teacher_listar' %}"> Cancelar </a>  
+        <button type="submit" name="" class="btn btn-success ml-2">Mostrar</button>
+      </div>
+      </form>
+    <!--<form method="post">
+      <div class="form-group">
+      {% csrf_token %}
+      {{ form.as_p }}-->
+              
+        <!--<a class="btn btn-info btn-block" href="{% url 'computer:computer_listar' %}"> Listar </a> -->
+       <!-- <a class="btn btn-info btn-block" href="{% url 'computer:computer_listar' %}"> Listar </a>
+      </div>
+    </form>-->
+      </div>
+    </div>
+  </div>
+{% endblock %}

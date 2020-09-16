@@ -1,0 +1,105 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+  <div class="container">
+    <div class="card card-register mx-auto mt-5">
+            <div class="card-header">Registrar Usuarios Invitados</div>
+            <div class="card-body">
+              <form action="{% url 'guest:invitado_exter' %}" method="post">
+                {% csrf_token %}
+            
+                  <div class="form-group">        
+                    <div class="form-column">
+                      <div class="col-md-12">
+                        <label >Descripcion</label>
+                        <input type="text" name="description" class="form-control"></input>
+                      </div>
+
+                      <div class="col-md-12">
+                        <label >Contraseña</label>
+                        <input type="text" name="pass" class="form-control"></input>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label >Fecha Inicio</label>
+                        <div class="input-group">
+                          <input type="date" name="fini" class="form-control"></input>
+                          <div class="input-group-addon">
+                              <i class="fa fa-calendar"></i>
+                          </div>
+                        </div>  
+                      </div>
+
+                      <div class="col-md-6">
+                        <label>Hora Inicio</label>
+                        <div class="input-group">
+                          <input type="time" name="hini" class="form-control"></input>
+                          <div class="input-group-addon">
+                              <i class="fa fa-clock-o""></i>
+                          </div>
+                        </div>  
+                      </div>           
+                    
+                      <div class="col-md-6">
+                        <label>Fecha Fin</label>
+                        <div class="input-group">
+                          <input type="date" name="fefin" class="form-control"></input>
+                          <div class="input-group-addon">
+                              <i class="fa fa-calendar"></i>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label >Hora Fin</label>
+                        <div class="input-group">
+                          <input type="time" name="hfin" class="form-control"></input>
+                          <div class="input-group-addon">
+                              <i class="fa fa-clock-o""></i>
+                          </div>
+                        </div>  
+                      </div>
+
+                      <div class="col-md-6">
+                        <label>Status</label>
+                         <div class="input-group">
+                          <input type="radio" name="status" value="1" > Activo </input> <br>
+                          <input type="radio" name="status" value="0"> Inactivo </input> <br>
+                        </div>  
+                        
+                      </div>
+
+                      <div class="col-md-12">
+                        <label>Laboratorio</label>
+                          <select name="laboratorio" class="form-control" required>
+                            <option value="">Seleccione un Laboratorio</option>
+                            <option value="1">Laboratorio de Hardware y Software 1</option>
+                            <option value="2">Laboratorio de Hardware y Software 2</option>
+                            <option value="3">Laboratorio de Hardware y Software 3</option>
+                            <option value="4">Laboratorio de Tecnología 1</option>
+                            <option value="5">Laboratorio de Tecnología 2</option>
+                            <option value="6">Laboratorio de Tecnología 3</option>
+                            <option value="7">Laboratorio de Electrónica</option>
+                            <option value="8">Laboratorio de Robótica</option>
+                            <option value="9">Laboratorio de Telecomunicaciones</option>
+                          </select>
+                      </div> 
+
+                    </div> 
+                  </div>                       
+                                              
+                  <div class="row d-flex flex-row-reverse">
+                    
+                      <button class="btn btn-success btn-block" type="submit" > Registrar </button>
+                      <a class="btn btn-info btn-block" href="{% url 'guest:guest_listar' %}"> Listar </a>                      
+                          
+                  </div>
+                
+              </form>
+
+            </div>
+          
+    </div>
+  </div>
+  
+{% endblock %}
